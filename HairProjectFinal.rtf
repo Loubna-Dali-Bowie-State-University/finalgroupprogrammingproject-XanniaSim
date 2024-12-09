@@ -1,0 +1,163 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 import java.io.File;\
+import java.io.FileInputStream;\
+import java.io.FileOutputStream;\
+import java.io.BufferedWriter;\
+import java.io.BufferedReader;\
+import java.io.FileWriter;\
+import java.io.FileReader;\
+import java.io.IOException;\
+import java.util.Scanner;\
+\
+class HairLibrary \{\
+  String hairType;\
+  String porosity;\
+  String favProduct;\
+\
+// Initializes hair parameters\
+  public HairLibrary() \{\
+    hairType = "Unknown";\
+    porosity = "Unkown";\
+    favProduct = "Unknown"; \
+  \}\
+\
+// Takes in information for hair parameters\
+  public HairLibrary(String hT, String poros, String favProd) \{\
+    hairType = hT;\
+    porosity = poros;\
+    favProduct = favProd;\
+  \}\
+\
+\
+// Displays Program Info \
+  void displayHairIntro() \{\
+    System.out.println("Welcome to our Hair Care System!");\
+    System.out.println("This system takes in your information and retruns a list of suggested for the specifed hair type.");\
+    System.out.println("Please answer the following questions");\
+    System.out.println();\
+  \}\
+  \
+// Displays information for hair\
+  void displayHairInfo() \{\
+    System.out.println("Customer Information");\
+    System.out.println("Hair Type: " + hairType);\
+    System.out.println("Porosity: " + porosity);\
+    System.out.println("Favorite Product: " + favProduct);\
+    System.out.println();\
+  \}\
+\}\
+\
+public class Main \{\
+  public static void main(String[] args) \{\
+    String Product1 = "";\
+    String Product2 = "";\
+    String Product3 = "";\
+    // Declare and initialize a 6x4 2D array with string values\
+    String[][] hairList = \{\
+        \{"3A", "Cantu - Shea Butter Moisturizing Curl Activator Cream", "Shea Moisture - Leave in Conditioner", "OLAZARAH - Daily Coconut Oil"\},\
+        \{"3B", "Organic Shea & Argan Oil Butter - Tahitian Vanilla", "Valleylux - Organic Jojoba Oil", "Mielle - Rosemary Mint"\},\
+        \{"3C", "Tgin - Butter Cream Daily Moisturizer", "Shea Moisture Repair Cream", "Argan Oil - Intensive Conditioning Treatment"\},\
+        \{"4A", "Creme Of Nature", "The Mane Choice - Anti-Breakage & Repair Antidote ", "Aphogge - Moisturizing Serum"\},\
+        \{"4B", "Frutics - Sleek & Shine Anti-Humidity Milk", "Garnier - Botanical Repair", "Mini - Intense Hydrating Mask"\},\
+        \{"4C", "Blue Magic", "Tgin - Miracle Repair", "Better Shea Butter - Mango Butter"\}\
+    \};\
+\
+    Scanner hair = new Scanner(System.in);\
+    \
+    // Initialize the HairLibrary object with the given input\
+    HairLibrary hairIntro = new HairLibrary();\
+    hairIntro.displayHairIntro();\
+    \
+    System.out.println("What is your hair type (Capital Letters only) : ");\
+    String hT = hair.nextLine();\
+\
+    System.out.println("What porosity is your hair: ");\
+    String pors = hair.nextLine();\
+\
+    System.out.println("What is your favorite hair product: ");\
+    String prod = hair.nextLine();\
+    System.out.println();\
+\
+\
+// Initialize the HairLibrary object with the given input\
+    HairLibrary hairInput = new HairLibrary(hT, pors, prod);\
+\
+// Display hair information\
+    System.out.println("The following information has been stored:");\
+    System.out.println("Hair Type, Porosity, Favorite Product");\
+    System.out.println();\
+// hairInput.displayHairInfo();\
+    \
+// Compare the first Array column values\
+    for (int i = 0; i < hairList.length; i++) \{\
+        String current = hairList[i][0];       // Value in the current row's first column\
+\
+        if (current.equals(hT)) \{\
+            Product1 = hairList[i][1];\
+            Product2 = hairList[i][2];\
+            Product3 = hairList[i][3];\
+            \
+        \} \
+    \}\
+\
+// Write information to File \
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("HairInfo.txt"))) \{\
+        writer.write("Customer Information");\
+        writer.newLine();\
+        writer.newLine();\
+        writer.write("Hair Type: " + hT);\
+        writer.newLine();\
+        writer.write("Porosity: " + pors);\
+        writer.newLine();\
+        writer.write("Favorite Product: " + prod);\
+        writer.newLine();\
+        writer.newLine();\
+        \
+        writer.write("Suggested Product List");\
+        writer.newLine();\
+        writer.newLine();\
+        writer.write("Hair Type: " + hT);\
+        writer.newLine();\
+        writer.write("Product 1: " + Product1);\
+        writer.newLine();\
+        writer.write("This product helps with Dryness ");\
+        writer.newLine();\
+        writer.newLine();\
+        writer.write("Product 2: " + Product2);\
+        writer.newLine();\
+        writer.write("This product helps with Split End Control");\
+        writer.newLine();\
+        writer.newLine();\
+        writer.write("Product 3: " + Product3);\
+        writer.newLine();\
+        writer.write("This product helps with Moisture Retention");\
+        writer.newLine();\
+       \
+    \}\
+    catch (IOException e) \{\
+        System.out.println("An error has occured!");\
+        e.printStackTrace();\
+        \}\
+    \
+// Output information from File  \
+    try (BufferedReader reader = new BufferedReader(new FileReader("HairInfo.txt"))) \{\
+        String line;\
+            // Read and print file line by line\
+        while ((line = reader.readLine()) != null) \{\
+            System.out.println(line);\
+        \}\
+    \} \
+    catch (IOException e) \{\
+        System.out.println("Error reading file: " + e.getMessage());\
+    \}\
+    \
+    hair.close(); // Close scanner to prevent resource leak\
+  \}\
+\}\
+}
